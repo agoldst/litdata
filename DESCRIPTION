@@ -2,8 +2,11 @@ Package: litdata
 Title: R resources for Literary Data, Spring 2015
 Version: 0.1
 Authors@R: "Andrew Goldstone <andrew.goldstone@rutgers.edu> [aut, cre]"
-Description: Includes functions and document templates for use on homework
+Description: R resources for Literary Data: Some Approaches, Department of
+    English, Graduate School of Arts and Sciences, Rutgers University, Spring
+    2015
 Depends:
-    R (>= 3.1.0)
+    R (>= 3.1.0),
+    rmarkdown
 License: GPLv3
 LazyData: true
