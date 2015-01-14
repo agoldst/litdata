@@ -1,0 +1,96 @@
+---
+title: Homework 1 (Jan. 29)
+author: YOUR NAME HERE
+output: pdf_document
+fontsize: 12pt
+---
+
+```{r setup, include=F}
+# ignore this fiddly bit
+knitr::opts_chunk$set(comment=NA)
+```
+
+# The file system
+
+
+1. Where do you start when you open RStudio?
+
+YOUR ANSWER HERE
+
+2. What happens if you use `setwd()` but specify a path to something that doesn't exist? 
+
+YOUR ANSWER HERE
+
+3. What does `setwd("..")` do? Are there any circumstances where this command fails? Try a few paths with ".." as one of the folders (not just on its own). What is `..`? What is `../..`? How about `.`?
+
+YOUR ANS....oh you know what to do.
+
+4. There is a folder called `plainText`. With `TextAnalysisWithR` as your working directory, change to this directory with: (a) one use of `setwd`; (b) two successive uses of `setwd`; (c) a single use of `setwd` but with a different path specification from in (a). To check your results, use `getwd()`.
+
+# Assignment
+
+1. Consider:
+
+```{r eval=F}
+x <- 10
+print(x * 2)
+x <- 2 * x
+print(x)
+```
+
+Why doesn't the last line print `10`?
+
+2. Computers are famed for their rigidity. Tell them to follow a set of instructions over and over again, and they will do the *same exact thing* over and over again. Write two lines that do not produce the same result when you enter them into the console repeatedly. Use `x`.
+
+```{r}
+# enter your R code, repeated several times, here
+# enter your R code, repeated several times, here
+```
+
+Speculate: Is the same thing possible without using `x`?
+
+3. Explain the difference between the following statements (try them both):
+
+```{r eval=F}
+five <- 2 + 2
+5 <- 2 + 2
+```
+
+# Types
+
+Write down variable names and types needed to store the following information. Remember that R variables are always vectors. Note when a multiple-element vector will be needed; just make up fake data.
+
+For example: to store the information about whether the most recent winner of the Booker Prize is a U.K. citizen, one needs a single-element *logical* vector, so note this as follows:
+
+```{r}
+last_booker_uk <- F # logical
+```
+   
+On the other hand, to store the information about whether *each* of the Booker winners were from what Paul Gilroy calls "Brit-town," we would need a multiple vector:
+
+```{r}
+booker_uk <- c(T, T, F) # and so on. logical: one element for each year
+```
+
+1.  the titles of all the novels written by Georgette Heyer
+
+2.  the complete text of *Moby-Dick* (how many elements?)
+
+3.  the complete text of *Moby-Dick*, with formatting information
+
+4.  the gender of all the Nobel laureates in literature
+
+5.  the number of copies of *Beloved* held in each library in New Jersey
+
+6.  the total sales of *The Lord of the Rings* in each year since publication
+
+7.  the dates of publication of each serial installment of *Great Expectations*
+
+8.  the titles of Shakespeare's plays and their genres in the First Folio
+
+9.  the names of 8 modernist poets and the number of times each one appeared in the same issue of *Poetry* as each of the others
+
+10. *bonus:* the image currently appearing on your monitor
+
+
+
