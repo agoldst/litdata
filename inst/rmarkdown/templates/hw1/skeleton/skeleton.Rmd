@@ -21,11 +21,30 @@ YOUR ANSWER HERE
 
 YOUR ANSWER HERE
 
-3. What does `setwd("..")` do? Are there any circumstances where this command fails? Try a few paths with ".." as one of the folders (not just on its own). What is `..`? What is `../..`? How about `.`?
+3. What does `setwd("..")` do? Are there any circumstances where this command fails? Try a few paths with `..` as one of the folders (not just on its own). What is `..`? What is `../..`? How about `.`?
 
 YOUR ANS....oh you know what to do.
 
-4. There is a folder called `plainText`. With `TextAnalysisWithR` as your working directory, change to this directory with: (a) one use of `setwd`; (b) two successive uses of `setwd`; (c) a single use of `setwd` but with a different path specification from in (a). To check your results, use `getwd()`.
+4. Change working directories to `TextAnalysisWithR` (wherever you unzipped it). Inside this unzipped set of folders, there is a folder called `plainText`. With `TextAnalysisWithR` as your working directory, how do you change to this directory with:
+
+    (a) one use of `setwd`?
+    (b) two successive uses of `setwd`?
+    (c) a single use of `setwd` but with a different path specification?
+
+To check your results, use `getwd()` and see if it returns a path ending in `plainText`.
+
+Because it is tricky to match file systems, type your answers in the following code block, which is not evaluated by R:
+
+```{r eval=FALSE}
+# one use of setwd
+
+# two uses of setwd
+
+
+# one use of setwd, redux
+
+```
+
 
 # Assignment
 
