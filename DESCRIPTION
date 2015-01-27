@@ -8,6 +8,7 @@ Description: R resources for Literary Data: Some Approaches, Department of
 Depends:
     R (>= 3.1.0),
     rmarkdown,
-    ggplot2
+    ggplot2,
+    stringr
 License: GPLv3
 LazyData: true
