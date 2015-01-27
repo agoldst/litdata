@@ -1,0 +1,168 @@
+---
+title: Homework 2 (Feb. 5)
+author: YOUR NAME HERE
+output: pdf_document
+fontsize: 12pt
+---
+
+```{r setup, include=F}
+# ignore this fiddly bit and just leave it as is
+knitr::opts_chunk$set(comment=NA)
+library("stringr")
+```
+
+# Thinking about strings
+
+1. Try the funny-looking assignment `z <- c()`. Concatenate `z` with some other numeric vectors and explain what `z` is.
+
+YOUR DESCRIPTIVE ANSWER HERE
+
+2. Now consider `Z <- ""`. Imagine that `s` is a character vector but you don't know anything about it. What is the value of `str_c(Z, s)`? How about `str_c(s, Z)`? Try a few example values of your own for `s`.
+
+```{r eval=F}
+# this code is not executed, so you can write abstract identities
+str_c(Z, s) <-      # fill in the blank
+str_c(s, Z) <-      # fill in the blank
+```
+
+Explain in words the difference between this and `paste(s, Z)`. 
+
+3. *Optional.* Specify another R value and another R function that has the same properties as the pairs (`z`, `c`) and (`Z`, `str_c`).
+
+OPTIONAL ANSWER HERE
+
+4. `str_c` takes two kinds of parameters, the ordinary or *positional* kind and the *named* kind. When a value for a named parameter is left unspecified in the function invocation, R computes the function with a so-called *default value* that is set by the definition of the function. What is the default value of the `sep` parameter to `str_c`? Demonstrate your answer with an example:
+
+```{r}
+x <- "Let us go then"
+y <- "you and I"
+DEFAULT <- "?????" # CHANGE THIS
+str_c(x, y)
+str_c(x, y, sep=DEFAULT) # value should be same as previous
+```
+
+(Bonus. What could the default value for `collapse` possibly be?)
+
+BONUS ANSWER HERE
+
+5. `paste` is almost the same as `str_c`, and unlike the latter, doesn't require you to install `stringr`. Like `str_c`, `paste` takes character vectors as positional parameters and then has named parameters `sep` and `collapse`. What is the default value of `sep` for `paste`?
+
+EXPLAIN HERE
+
+# Jockers's "first foray"
+
+Copy the `TextAnalysisWithR/data/plainText/melville.txt` file to the same directory as your homework `.Rmd` file. Then you can replace the longer path with a simple mention of `melville.txt`.
+
+Copy into the following code block the code for loading the text of the Gutenberg *Moby-Dick* from Jockers:
+
+```{r}
+# INSERT HERE: code to read the text into a new variable
+text.v <- "fix me"
+```
+
+1a. Jockers finds the beginning of the data of *Moby-Dick* (as opposed to the metadata) with the expression `start.v <- which(text.v == "CHAPTER 1. Loomings.")`. That works, but this pattern (`which(text.v == "<first line of text>")`) is not necessary valid for any text. What does this assume? (Hint: what does `which` do?)
+
+
+1b. Another way to do it is to use the function `match`. `match(term, vector)` gives the *index* of the *first* occurrence of `term` in `vector`. Give a new expression for the start of the content of *Moby-Dick* using `match` instead and show that it is equal to `start.v`.
+
+
+
+
+1c. Now write a single (and, hopefully, rather clearer) expression that transforms the original text of the whole Gutenberg *Moby-Dick* by removing both the initial and the trailing paratexts at once.
+
+
+
+
+1d. Go ahead and do the practice problem. You'll need to enter the code for creating the word frequency table from the text data. But don't just plot the top 10 words to check Zipf's law. Plot the first 100. To insert a plot in R markdown, you don't have to do anything special: plotting functions stick the figures right into your document. (We won't be doing much with the `plot` function Jockers uses here, so treat it as a black box.)
+
+```{r, fig.cap=""}
+# INSERT: fill in some code from Jockers here
+
+# then:
+top_word_counts <- 1:100    # REPLACE THIS with an expression for the
+                            # frequencies of the top 100 words in Moby-Dick
+plot(top_word_counts)
+```
+
+
+
+2. Download the plain text of [*The Sheik*](http://www.gutenberg.org/cache/epub/7031/pg7031.txt) from Project Gutenberg. Use "Save as" in your browser and put the file in the same directory as this homework, and give it the name `sheik-gutenberg.txt`. 
+
+3. Load it into a character vector in R. Rather than use `scan`, use the simpler function `readLines`:
+
+```{r}
+sheik_lines <- readLines("sheik-gutenberg.txt")
+```
+
+4. Following Jockers's pattern, remove the metadata, tokenize the text, and determine the number of times the words `sheik`, `body`, `love`, and `the` occur in this novel, ignoring case, and the total number of words in the novel. Assign these as named elements of a vector `sheik_counts`.
+
+Let's stipulate that the text starts *after* the title page, with the word "CHAPTER," and ends before "THE END." Insert your code here:
+
+```{r}
+# fill in operations on sheik_lines...
+
+
+
+sheik_counts <- numeric()
+
+
+# fill in assignments to sheik_counts
+sheik_counts["sheik"] <- 0
+sheik_counts["body"] <- 0
+# etc.
+
+# and sheik_total
+sheik_total <- 0
+```
+
+
+5. Jockers gives you the functions necessary to derive a sorted *word frequency table* for the text. (Jockers calls the one for *Moby-Dick* `sorted.moby.freqs.t`). Compare the most frequent words in *The Sheik* to those in *Moby-Dick*. Make a few remarks on whether the 20 most frequent words distinguish these texts.
+
+```{r}
+# your code here
+```
+
+BRIEF DISCUSSION HERE
+
+
+# A small challenge
+
+1. It's often easier to work this kind of thing out with a toy example. Let's do this for this "story":
+
+```{r}
+story <- "For sale: baby shoes, unworn."
+story_words <- unlist(str_split(story, "\\W+"))
+story_words
+```
+
+Write down an expression with `str_c` to construct the four bigrams of this story (the first two are `for sale` and `sale baby`).
+
+```{r}
+story_bigrams <- str_c()  # what goes here?
+```
+
+2. If your expression has any explicit vector constructions using `c()`, replace them with sequences using `:`.
+
+```{r}
+story_bigrams <- str_c()  # improved
+```
+
+3. If your expression has any literal numbers other than 1 in it, replace those with expressions using `length(story_words)`.
+
+```{r}
+story_bigrams <- str_c()  # even more improved
+```
+
+4. Now construct the vector of all the bigrams in *The Sheik*.
+
+```{r}
+sheik_bigrams <- str_c() # what goes here?
+```
+
+5. Compute the word frequency table and sort it, and use it to list the top ten bigrams in the novel.
+
+```{r}
+# your code for constructing the bigrams table and listing the top 10
+```
+
+
