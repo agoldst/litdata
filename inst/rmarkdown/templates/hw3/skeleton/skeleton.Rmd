@@ -1,0 +1,162 @@
+---
+title: Homework 3 (Feb. 12)
+author: YOUR NAME HERE
+output: pdf_document
+fontsize: 12pt
+---
+
+```{r setup, include=F}
+## ignore this fiddly bit and just leave it as is
+knitr::opts_chunk$set(comment=NA)
+library("stringr")
+```
+
+## Groups
+
+Please continue discussing with one another your mutual interests and ideas about groups for the end-of-semester work. One good way to think about this is to collaborate on some of these early homeworks. 
+
+## Loop practice
+
+### Even more vector subscripting
+
+Before you can subscript a vector, it has to exist. There are a couple of ways to create a "blank" or empty vector in R. On the last homework, you saw that `c()` yields a zero-length something. But this expression is not clear about what *type* of data you intend to store in the vector. R doesn't care, but your human code-readers do. Jockers has his naming convention (calling things `.v` and `.t` and so on). Another way is to use an expression like `x <- numeric()`. The strange function `numeric()` can be replaced with `character()`, `logical()`, and others too. What is the length of `x` in this case? Now try `x[2] <- 10`. Finally, try `x["word"] <- 1`. Generalize: what happens when you assign to an element of a vector that does not exist?
+
+(Incidentally, try supplying a number as an argument to these *constructor* functions: what is `character(3)`?)
+
+### "For" is for counting
+
+Set
+
+```{r}
+words <- c("I", "am", "that", "I", "am")
+count <- 0
+```
+
+Now write a `for` loop that tallies the number of times `am` occurs in `words` and stores the result in `count`. At the end of the loop, `count` should be 2:
+
+```{r}
+## insert loop here
+
+count == 2 # should be TRUE
+```
+
+*Hint*: each time through the loop, the value of `count` *might* increase by 1.
+
+Now rewrite the loop so that this tally is stored not as the sole value of `count` but as an element of a vector, accessible by name. Instead of using a literal `"am"`, let's use a variable, which we'll just set to be `"am"` at the start:
+
+```{r}
+count <- numeric()
+word <- "am"
+count[word] <- 0
+## your slightly modified loop here
+
+count[word] == 2 # should be TRUE
+```
+
+Make sure you understand what is going on in the subscripting expression.
+
+### Boundary condition
+
+What value do you get if you ask for `count["and"]`? This is a problem for tabulating, since we want our starting value for word counts to be zero. The handy function `is.na(x)` is `TRUE` is `x` is `NA` (actually, this function is vectorized---try it!)
+
+Write an `if` block that tests whether `count[word]` is `NA`, and, if so, sets `count[word]` to 1; if it is not `NA`, your block should increase `count[word]` by 1. Demonstrate its correctness by copying the *same block* twice as directed below:
+
+```{r}
+word <- "am"
+## if block here
+
+count[word] == 3 # should be TRUE
+```
+
+```{r}
+word <- "and"
+## identical if block here
+
+count[word] == 1 # should be TRUE
+```
+
+### Tabulate
+
+Now modify your loop so that `count[w]` gives the number of occurrences of word `w` in `words` for any `w` that occurs at least once. *Hint*: you don't have to include use any literal character strings. Just variables!
+
+```{r}
+count <- numeric() # clear the slate
+## your modified loop here
+
+all(count[c("I", "am", "that")] == c(2, 2, 1)) # should be TRUE
+```
+
+If you're stuck, think about how you'd explain tabulation step by step to someone who only knew about adding 1 but who, weirdly, always liked to start counting like this: `NA`, 1, 2, 3...
+
+## Jockers
+
+Work through the short third chapter of Jockers.
+
+### Practice 3.1
+
+Go ahead and do it. This may be getting a bit repetitive, but the practice will help increase your comfort in R. See if you can make your word-counting code more concise than Jockers's. Use `str_split`, `str_c` instead of `strsplit` and `paste`.
+
+As an enhancement, use an `if...else` statement in your code to print out a warning if the Austen text file cannot be found. Then try knitting with the file in place and without (submit the knitted version with the file).
+
+### Practice 3.2 
+
+Should be a quickie. I won't make you implement `unique` with a `for` loop, but you could!
+
+### Practice 3.3
+
+```{r}
+## expression for the twelve shared words among the two top-10 lists
+```
+
+### Practice 3.4
+
+```{r}
+## expression for the top words in S&S not in the top-10 for MB
+```
+
+### Extra
+
+`%in%` is very important. Implementing *this* with a `for` loop (containing an `if` statement) is excellent practice but strictly *optional*. However, to firm up your intuition for it, do the following:
+
+1. Fill in values below as directed in the comments:
+
+```{r eval=F}
+x <- "Fortinbras"
+names1 <- c() # make this a three element character vector
+names2 <- c() # and this too, such that...
+x %in% names1 # is TRUE
+x %in% names2 # is FALSE
+```
+
+2. Now examine the values of `match(x, names1)` and `match(x, names2)`. Use your findings to write a *general* expression for `x %in% y` using `match`. Demonstrate with a couple of examples.
+
+````
+## not evaluated: fill in your match expression
+x %in% y == 
+````
+
+```{r}
+## add your demo here
+```
+
+3. But we're not done! `%in%` is *vectorized* in its left hand argument. For example,
+
+```{r}
+c("Fortinbras", "Guildenstern") %in% c("Hamlet", "Ophelia", "Fortinbras")
+```
+
+That is, each element of the result is a logical value indicating whether the corresponding element of the left-hand side of `%in%` is an element of the right-hand side.
+
+Give an expression for `x %in% y` in terms of `match` that is *generally* valid for `x` and `y` vectors of any length. Demonstrate with a few examples.
+
+````
+## not evaluated: fill in your match expression
+x %in% y == 
+````
+
+```{r}
+## add your demo here
+```
+
+Comment on the relationship between this expression and the one you gave in the previous part.
+
