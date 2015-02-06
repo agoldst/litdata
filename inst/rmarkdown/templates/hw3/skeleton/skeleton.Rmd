@@ -7,7 +7,7 @@ fontsize: 12pt
 
 ```{r setup, include=F}
 ## ignore this fiddly bit and just leave it as is
-knitr::opts_chunk$set(comment=NA)
+knitr::opts_chunk$set(comment=NA, error=T)
 library("stringr")
 ```
 
