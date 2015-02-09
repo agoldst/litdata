@@ -1,0 +1,141 @@
+---
+title: Homework 4 (Feb. 19)
+author: YOUR NAME HERE
+output: pdf_document
+fontsize: 12pt
+---
+
+```{r setup, include=F}
+## ignore this fiddly bit and just leave it as is
+knitr::opts_chunk$set(comment=NA, error=T, cache=T)
+library("litdata")
+```
+
+# Lists: Exercise
+
+The following lines, which use `str_detect`, a function we haven't yet studied, derive a character vector with one element for each chapter of *The Sheik*.
+
+```{r}
+# strip off all but the body text
+body_ll <- sheik_ll[match("CHAPTER I", sheik_ll):
+                    (match("THE END", sheik_ll) - 1)]
+# find chapter heading indices:
+# str_detect gives a logical vector telling us which lines
+# match the pattern; which tells us the indices
+chap_indices <- which(str_detect(body_ll, "^CHAPTER [IVX]"))
+
+body_lc <- tolower(body_ll)
+
+# initialize results vector
+sheik_chaps <- character(length(chap_indices))
+
+# tricky edge condition: contrive the last "chapter start"
+# to be one past the last line
+chap_indices <- c(chap_indices, length(body_ll) + 1)
+
+for (j in seq_along(chap_indices[-length(chap_indices)])) {
+    sheik_chaps[j] <- str_c(body_lc[chap_indices[j]:
+                                   (chap_indices[j + 1] - 1)],
+                           collapse=" ")
+}
+```
+
+Now we split this up using our friend `str_split`:
+
+```{r}
+sheik_chaps_words <- str_split(sheik_chaps, "\\W+")
+```
+
+`sheik_chaps_words` is a *list*.
+
+Now write a `for` loop that counts the *fraction* of times "Arab" and "Diana" occur in each chapter, storing the results in two vectors.
+
+```{r}
+arab <- numeric()
+diana <- numeric()
+
+# your for loop here
+
+```
+
+These lines will print out your results as occurrences per 10000 words:
+
+For `arab`:
+
+```{r eval=F}
+round(arab * 10000)
+```
+
+For `diana`:
+
+```{r eval=F}
+round(diana * 10000)
+```
+
+# Data Frames: Exercises
+
+## The logic of the query
+
+Write down expressions that yield the following information by subscripting `laureates`.
+
+1. What is the surname of the unique laureate born in Portugal?
+
+```{r}
+# your expression here
+```
+
+2. What are the first names and surnames of the female laureates? (A single expression, yielding two columns of information.)
+
+```{r}
+# your expression here
+```
+
+3. What are the full names of all the laureates who are either women *or* born in Sweden? 
+
+```{r}
+# your expression here
+```
+
+4. How many laureates died in a country other than the country of their birth? Derive also an expression for their names, countries of birth, and countries of death.
+
+```{r}
+# your expression here
+```
+
+
+## Sorting
+
+1. Explain the relationship between a vector `x` and its ordering permutation `order(x)`.
+
+YOUR EXPLANATION HERE
+
+2. Now we are going to exploit our special data-frame subscripting syntax. So we don't go crazy, let's work on a smaller table:
+
+```{r}
+laur_small <- laureates[1:5, c("surname", "bornCountry", "gender", "year")]
+```
+
+Write an expression to sort this table alphabetically by surname.
+
+```{r}
+# your expression for sorting laur_small here
+```
+
+3. Now sort it in reverse alphabetical order by country of birth. 
+
+```{r}
+# your expression for sorting laur_small here
+```
+
+3. Sort `laur_small` by gender and year of prize. You'll need two `$` expressions.
+
+```{r}
+# your expression for sorting laur_small here
+```
+
+4. Write an expression in terms of `laureates` to show first names, surnames, birth dates, and prize years of the five most recently-born laureates. 
+
+```{r}
+# your expression here
+```
+
