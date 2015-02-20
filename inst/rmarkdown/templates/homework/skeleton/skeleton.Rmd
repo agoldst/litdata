@@ -2,12 +2,14 @@
 title: Homework NN
 author: YOUR NAME HERE
 date: DATE HERE
-output: pdf_document
+output:
+    pdf_document:
+        latex_engine: xelatex
 fontsize: 12pt
 ---
 
 ```{r setup, include=F}
-## ignore this fiddly bit and just leave it as is
+# ignore this fiddly bit and just leave it as is
 knitr::opts_chunk$set(comment=NA, error=T, cache=T)
 library("litdata")
 ```
