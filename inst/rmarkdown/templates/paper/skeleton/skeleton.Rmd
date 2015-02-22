@@ -1,0 +1,31 @@
+---
+title: Title
+author: Your Name Here
+date: The Date
+output:
+    pdf_document:
+        latex_engine: xelatex
+        includes:
+            in_header: preamble.tex
+fontsize: 12pt
+mainfont: "Garamond"
+geometry: [width=6in,height=8.5in]
+---
+
+Markdown and the knitting process work just as well for typesetting discursive text as they do for reports incorporating data analysis.[^knit] Here is a template to get you started. Use regular markdown notations: asterisks for italics, blank lines for new paragraphs, etc. It will be helpful to know a couple of extra markdown notations. For footnotes, write `[^label]` for the anchor and put the note body in a paragraph (anywhere) that starts with `[^label]:` (exemplified in the footnote on knitting below). For dashes, note that em dashes are spelled `---` and en dashes `--`.
+
+[^knit]: Not really knitting, since that, in strict rigor, refers to the process of executing R code chunks and incorporating their results into the the document. What you are really using is the subsequent link in the chain, which converts ordinary markdown into PDF using Pandoc and LaTeX.
+
+There's a convenient summary of markdown information in the [R Markdown Reference Guide](http://rmarkdown.rstudio.com/RMarkdownReferenceGuide.pdf).
+
+# Formatting
+
+I have set up this template to help you adjust the typography a bit to your liking. Look at the top of this file (this is the "YAML metadata block"). You have to have the font named in `mainfont: "..."` on your system or the knitting process will fail. I expect most of you have Garamond, but you can change it to (almost) any font you have. The `geometry:` parameters set the size of your text block.
+
+# Block quotes
+
+There is a markdown notation for block quotes: start a paragraph with `> ` (and leave blank lines on either side). Unfortunately, this isn't really right for typesetting block quotes, since it will indent the line following the block. To prevent this, put `\noindent`, followed by a space, at the start of the paragraph:
+
+> The practitioner of literate programming can be regarded as an essayist. (Knuth, 97)
+
+\noindent This is clumsy, but it will do.
