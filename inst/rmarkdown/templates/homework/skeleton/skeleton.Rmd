@@ -5,6 +5,7 @@ date: DATE HERE
 output:
     pdf_document:
         latex_engine: xelatex
+        fig_caption: true
 fontsize: 12pt
 ---
 
