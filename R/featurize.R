@@ -2,12 +2,14 @@
 #'
 #' @param ll lines of text
 #'
+#' @param split_pat a regular expression, handed on to \code{\link{strsplit}}
+#'
 #' @return a character vector of features
 #'
 #' @export
 
-featurize <- function (ll) {
-    result <- unlist(strsplit(ll, "\\W+"))
+featurize <- function (ll, split_pat="\\W+") {
+    result <- unlist(strsplit(ll, split_pat))
     result <- result[result != ""]
     tolower(result)
 }

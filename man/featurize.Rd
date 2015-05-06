@@ -4,10 +4,12 @@
 \alias{featurize}
 \title{Naively featurize lines of text.}
 \usage{
-featurize(ll)
+featurize(ll, split_pat = "\\\\W+")
 }
 \arguments{
 \item{ll}{lines of text}
+
+\item{split_pat}{a regular expression, handed on to \code{\link{strsplit}}}
 }
 \value{
 a character vector of features
