@@ -14,9 +14,7 @@ write_mallet_instances(instances, filename)
 \description{
 A helper function for saving a MALLET instance list.
 }
-\details{
-There is no corresponding \code{read_mallet_instances} because you can pass
-the name of the resulting file directly to
-\code{\link[mallet]{mallet.import}}.
+\seealso{
+\code{\link{read_mallet_instances}}
 }
 

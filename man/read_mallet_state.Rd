@@ -24,6 +24,10 @@ and \code{topic}. \code{doc} is either a document index or an ID if
 A helper function to read in a MALLET sampling state.
 }
 \details{
+Does not require the \code{mallet} package. As long as the
+supplied file is of the expected format (e.g. from command-line MALLET),
+this will do the job. Well, if you have the RAM.
+
 To get a list of stored document IDs from a model object
 \code{model}, use \code{model$getDocumentNames()}.
 }

@@ -3,6 +3,7 @@
 export(feature_frame)
 export(featurize)
 export(print_tabular)
+export(read_mallet_instances)
 export(read_mallet_state)
 export(write_mallet_instances)
 export(write_mallet_state)

@@ -11,5 +11,7 @@ Depends:
     ggplot2,
     stringr,
     xtable
+Suggests:
+    mallet
 License: GPLv3
 LazyData: true
