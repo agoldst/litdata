@@ -1,0 +1,59 @@
+---
+title: Technical Appendix
+author: Your Name Here
+date: The Date
+output:
+    pdf_document:
+        latex_engine: xelatex
+        fig_caption: true
+        includes:
+            in_header: preamble.tex
+fontsize: 12pt
+tables: true
+mainfont: "Garamond"
+geometry: [width=6in,height=8.5in]
+---
+
+```{r setup, include=F, cache=F}
+knitr::opts_chunk$set(comment=NA,
+                      error=F,            # check output carefully for errors
+                      warning=F,
+                      message=F,
+                      cache=T, autodep=T, # but set these to false if necessary
+                      echo=T)             # keep source code in output
+
+library("dplyr")
+library("tidyr")
+```
+
+This file demonstrates how you might use an appendix to give more details, and to show the code, used in preparing the data for a more concise and pointed analysis in your main report. The idea is that knitting the appendix (either automatically or manually) leads to the creation of files you need for your further analysis. But an appendix is also a good place to describe where you have downloaded data files from or how you created data yourselves, what you had to do to wrestle things into shape, and so on.
+
+Here, just to show the principle of the thing, I repeat the massaging of R's built-in `anscombe` data set from homework 8, saving the data set into a CSV file.
+
+I create an ID row called `obs` and then `gather` the built-in `anscombe` into long form:
+
+```{r massage1}
+a_qt <- anscombe %>%
+    mutate(obs=seq_along(x1)) %>%
+    gather("key", "value", -obs)
+```
+
+The `key` column here combines two independent pieces of information, the quartet grouping and the x/y variable designation. The `tidyr` function `separate` is a convenient way to split this into two columns.
+
+```{r massage2}
+a_qt <- a_qt %>% 
+    separate(key, c("key", "group"), 1)
+```
+
+Finally we can `spread` out the `x` and `y` columns:
+
+```{r massage3}
+a_qt <- a_qt %>%
+    spread(key, value)
+```
+
+and save the result to a CSV file for subsequent use in the main report:
+
+```{r save-result}
+write.csv(a_qt, "appendix_result.csv", row.names=F, quote=F)
+```

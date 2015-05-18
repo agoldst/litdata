@@ -1,0 +1,133 @@
+---
+title: Title
+author: Your Name Here
+date: The Date
+output:
+    pdf_document:
+        latex_engine: xelatex
+        fig_caption: true
+        includes:
+            in_header: preamble.tex
+fontsize: 12pt
+tables: true
+mainfont: "Garamond"
+geometry: [width=6in,height=8.5in]
+---
+
+```{r setup, include=F, cache=F}
+knitr::opts_chunk$set(comment=NA,
+                      error=F,            # check output carefully for errors
+                      warning=F,
+                      message=F,
+                      cache=T, autodep=T, # but set these to false if necessary
+                      echo=F)             # omit source code from output
+# you can override these global settings on particular chunks
+
+# more libraries here
+library("litdata")
+library("dplyr")
+```
+
+For your discursive text, use regular markdown notations: asterisks for italics, blank lines for new paragraphs, etc., `# Section` for a section heading. For footnotes, write `[^label]` for the anchor and put the note body in a paragraph (anywhere) that starts with `[^label]:` (replace `label` with any mnemonic you like).[^eg] For dashes, note that em dashes are spelled `---` and en dashes `--`.
+
+[^eg]: For example, here's a footnote. Chicago-style full citations in footnotes can be done by hand this way: Lauren Klein, "The Image of Absence: Archival Silence, Data Visualization, and James Hemings," *American Literature* 85, no.\ 4 (December 2013): 661--88.
+
+There's a convenient summary of markdown information in the [R Markdown Reference Guide](http://rmarkdown.rstudio.com/RMarkdownReferenceGuide.pdf).
+
+# Formatting
+
+I have set up this template to help you adjust the typography a bit to your liking. Look at the top of this file (this is the "YAML metadata block"). You have to have the font named in `mainfont: "..."` on your system or the knitting process will fail. I expect most of you have Garamond, but you can change it to (almost) any font you have. The `geometry:` parameters set the size of your text block.
+
+# Block quotes
+
+There is a markdown notation for block quotes: start a paragraph with `> ` (and leave blank lines on either side). Unfortunately, this isn't really right for typesetting block quotes, since it will indent the line following the block. To prevent this, put `\noindent`, followed by a space, at the start of the paragraph:
+
+> The practitioner of literate programming can be regarded as an essayist. (Knuth, 97)
+
+\noindent This is clumsy, but it will do.
+
+# Incorporating your results
+
+To incorporate results, use code chunks to process your data and then produce the outputs you need. Let's imagine you are making a graph:
+
+```{r sheik-letters, fig.cap="Letter frequencies in \\emph{The Sheik}"}
+sheik_letters <- sheik_ll %>%
+    tolower() %>%
+    str_replace_all("[^a-z]", "") %>%
+    str_split("") %>%
+    unlist() %>%
+    data_frame(letter=.) %>%
+    group_by(letter) %>%
+    tally()   # same as summarize(n=n())
+ggplot(sheik_letters, aes(x=letter, y=n)) +
+    geom_bar(stat="identity") +
+    ylab("occurrences")
+```
+
+Notice a few things. The code proper does not appear in the knitted PDF, only the figure. I have taken care to caption it and label axes. In the R markdown, notice that the chunk has *blank lines on both sides*. Most of you have not been doing this on your homeworks, but this is important and you should do it in almost all cases. The single exception is when you want to defeat the "floating" of figures and force them to appear (uncaptioned) exactly where you place them in the text.[^defloat] But in general I recommend you let the figures float.
+
+[^defloat]: This is described in my note on "R markdown and figures" at <http://rci.rutgers.edu/~ag978/litdata/figs/>.
+
+Don't forget the power of tables for displaying data, but remember you need to make your chunks `results="asis"` for this to work.
+
+```{r sheik-letters-table, results="asis"}
+sheik_letters %>% top_n(5) %>%
+    arrange(desc(n)) %>%
+    rename(occurrences=n) %>%
+    # you can also try `knitr::kable()`
+    print_tabular(caption="Top letters in \\emph{The Sheik}",
+                  floating=T)
+```
+
+In this example code I have used some parameters to my `print_tabular` function that make this table "float" like a figure if necessary.
+
+It's also possible to include numerical or text values "inline," in your paragraphs. We haven't used this much, but it is occasionally good to be able to mention numbers without hand-transcribing them. The above counts, for example, are based on the `r sum(sheik_letters$n)` alphabetic characters in the Gutenberg *Sheik* text.
+
+# Outsourcing
+
+Including the full analysis in one R markdown quickly becomes unwieldly. But you can use other code from within this main report file. I have already discussed some of these options, so here is a quick review, plus a couple of additional ideas.
+
+## R scripts
+
+The simplest option is to write a plain R script and `source` it in a chunk. The code of the script is executed and its results are available in the rest of the R markdown file for further computation or display.
+
+```{r source-example}
+source("source.R")  # creates a new data frame `source_results`
+```
+
+```{r source-results, results="asis"}
+print_tabular(source_results, floating=T,
+              digits=1,
+              caption="Dubious data from sourced R file")
+```
+
+By default, `print_tabular` rounds to the nearest integer, so note the `digits` parameter if you are dealing in decimal points.
+
+## R markdown appendices
+
+You should move any extensive technical discussion into an appendix. Since the material in your main report likely depends on the computations in the appendix, the most elegant solution is to incorporate this dependence into your program by having your main program automatically knit the appendix. However, if you do this, no variables from the appendix will be directly available in your main program. Instead, have your appendix create files on disk that your main program can read in for your analyses. Here is an example.
+
+```{r external-knit-example}
+# This only runs if "appendix_result.csv" does not already exist
+if (!file.exists("appendix_result.csv")) {
+    system("R -e 'rmarkdown::render(\"appendix.Rmd\")'")
+}
+appendix_data <- read.csv("appendix_result.csv")
+```
+
+```{r appendix-plot, fig.cap="Plot of appendix-generated data"}
+ggplot(appendix_data, aes(x, y)) + geom_point() +
+    geom_smooth(method="lm", se=F, fullrange=T) +
+    facet_wrap(~ group)
+```
+
+Some of you will have divided data or computational work in a way that makes this fully automated workflow impossible. In that case your analysis will begin with some intermediate, pre-processed data form. Your appendix can describe how that pre-processed data was prepared, perhaps with sample code in `eval=F, echo=T` chunks.
+
+It seems that if you knit an external R markdown with the automated mechanism here, RStudio will show you the appendix PDF instead of the main PDF, though both are created. To open the latter, you can simply use the Files tab and click on the main PDF.
+
+If you end up opting to knit the appendix manually, that's okay too. Please include instructions with your final report submission telling me what *simple* process would be necessary to recreate your PDFs from your sources.
+
+## Code documentation
+
+In general I expect appendices, but not reports, to include source code, so set `echo=T` in the appendix's `knitr::opts_chunk$set` line. If you use R scripts, use code comments to explain *why* you are doing what you doing (extensive detail explaining every step should not be necessary).
+
